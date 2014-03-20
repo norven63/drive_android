@@ -45,24 +45,13 @@
         android:icon="@drawable/icon_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-        <!--
-      BroadcastReceiver that will receive the GCM messages from GCM
-      services and handle them to the custom IntentService.
-
-      The com.google.android.c2dm.permission.SEND permission is necessary
-      so only GCM services can send data messages for the app.
-        -->
         <receiver
             android:name="com.goodow.realtime.android.gcm.GCMRedirectedBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
-
-                <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <!-- The category tag is not required for applications targeted to minSdkVersion 16 and higher -->
+
                 <category android:name="com.goodow.android.drive" />
             </intent-filter>
         </receiver>
@@ -73,12 +62,7 @@
                 <action android:name="com.goodow.realtime.android.action.DOWNLOAD" />
             </intent-filter>
         </receiver>
-        <!--
-      Application-specific subclass of GCMBaseIntentService that will
-      handle received messages.
 
-      By default, it must be named .GCMIntentService, unless the
-      application uses a custom BroadcastReceiver that redefines its name.        -->
         <service android:name="com.goodow.realtime.android.gcm.GCMIntentService" />
         <service android:name="com.goodow.drive.android.service.MediaDownloadService" />
 
@@ -92,22 +76,53 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:launchMode="singleTop" android:name="com.goodow.drive.android.activity.MainActivity">
+        <activity
+            android:name="com.goodow.drive.android.activity.MainActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity android:name="com.goodow.drive.android.activity.DownloadActivity" />
-        <activity android:launchMode="singleTop" android:name="com.goodow.drive.android.activity.play.AudioPlayActivity" android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:launchMode="singleTop" android:name="com.goodow.drive.android.activity.play.VideoPlayActivity" />
-        <activity android:launchMode="singleTop" android:name="com.goodow.drive.android.activity.play.FlashPlayerActivity" android:screenOrientation="landscape" />
-        <activity android:launchMode="singleTop" android:name="com.goodow.drive.android.activity.play.PicturePlayAcivity" />
-        
+        <activity
+            android:name="com.goodow.drive.android.activity.play.AudioPlayActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="com.goodow.drive.android.activity.play.VideoPlayActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="com.goodow.drive.android.activity.play.FlashPlayerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="com.goodow.drive.android.activity.play.PicturePlayAcivity"
+            android:launchMode="singleTop" />
+
         <provider
             android:name="com.goodow.drive.android.provider.SearchSuggestionSampleProvider"
-            android:authorities="com.goodow.drive.android.provider.SearchSuggestionSampleProvider"></provider>
-        <meta-data android:name="android.app.default_searchable" android:value="com.goodow.drive.android.activity.MainActivity"/>
+            android:authorities="com.goodow.drive.android.provider.SearchSuggestionSampleProvider" >
+        </provider>
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="com.goodow.drive.android.activity.MainActivity" />
+
+        <!-- JUnit配置:记住这个一要放在application内,activity外 -->
+        <uses-library android:name="android.test.runner" />
     </application>
+
+    <!-- JUnit配置:记住这个一要放在application外面 -->
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="Tests for My App"
+        android:targetPackage="com.goodow.android.drive" />
+
+    <!-- JUnit配置:切记Run As\Run configurations内配置相应的 android.test.InstrumentationTestRunner!!!! -->
 
 </manifest>
